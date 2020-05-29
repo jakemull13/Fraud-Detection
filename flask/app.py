@@ -1,5 +1,12 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
+import predict
 app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -22,8 +29,14 @@ def form_display():
 @app.route('/string_reverse', methods=['POST'])
 def reverse_string():
     text = str(request.form['some_string'])
-    reversed_string = text[-1::-1]
+    reversed_string = text[-1::-1]+''
     return ''' output: {}  '''.format(reversed_string)
+
+@app.route('/score', methods=['GET'])
+def chance_fraud():
+    return predict.pred()
+    
+    
 
 
 if __name__ == '__main__':
